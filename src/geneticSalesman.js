@@ -4,14 +4,11 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
     offspringPerSurvivor: 50,
   };
 
-  /* -------------------- Complete me! -------------------- */
-
   // initiating bloodlines
   var bloodlines = [];
   for(var j = 0; j < options.numberOfBloodlines; j++){
     bloodlines.push(initiateBloodline(genes));
   }
-
 
   // exhaust resources
   while(availableResources > 0) {
