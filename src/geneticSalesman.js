@@ -6,7 +6,41 @@ var geneticSalesman = function(genes, assessFitness, initiateBloodline, mutate, 
 
   /* -------------------- Complete me! -------------------- */
 
-  return optimalRoute;
+  // initiating bloodlines
+  var bloodlines = [];
+  for(var j = 0; j < options.numberOfBloodlines; j++){
+    bloodlines.push(initiateBloodline(genes));
+  }
+
+
+  // exhaust resources
+  while(availableResources > 0) {
+    for(var j = 0; j < bloodlines.length; j++){    
+      var survivor = bloodlines[j];
+      var survivor_score = assessFitness(bloodlines[j]);
+      for(var i = 0; i < options.offspringPerSurvivor; i++){
+        var kid = mutate(bloodlines[j]);
+        var score = assessFitness(kid);
+        if(survivor_score > score){
+          survivor_score = score;
+          survivor = kid;
+        }
+      }
+      bloodlines[j] = survivor;
+    }
+    availableResources--;
+  }
+
+  var survivor = bloodlines[0];
+  var survivor_score = assessFitness(bloodlines[0]);
+  for(var i = 0; i < bloodlines.length; i++){
+    var score = assessFitness(bloodlines[i]);
+    if(survivor_score > score){
+      survivor_score = score;
+      survivor = bloodlines[i];
+    }
+  }
+  return survivor;
 }
 
 var createRoute = function(cities){
@@ -20,9 +54,15 @@ var createRoute = function(cities){
 }
 
 var alterRoute = function(route){
-
-  /* -------------------- Complete me! -------------------- */
-
+  var new_route = route.slice(); // copy
+  var id1 = Math.floor(Math.random() * route.length);
+  var id2 = Math.floor(Math.random() * route.length);
+  while(id1 == id2){
+    id2 = Math.floor(Math.random() * route.length);
+  }
+  new_route[id1] = new_route[id2];
+  new_route[id2] = route[id1];
+  return new_route;
 }
 
 var calculateDistance = function(route){
